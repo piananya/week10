@@ -26,7 +26,7 @@ pipeline {
                     echo "Current path is ${pwd()}"
                     sh "docker build -t ${DOCKER_IMAGE_NAME} ."
                     sh 'docker login -u $DOCKERHUB_COMMON_CREDS_USR -p $DOCKERHUB_COMMON_CREDS_PSW'
-                    sh 'docker tag lab_docker_jenkins-image pianya/lab_docker_jenkins-image'
+                    sh 'docker tag lab_docker_jenkins-image pianaya/lab_docker_jenkins-image'
                     sh 'docker image push pianaya/lab_docker_jenkins-image'
                 }
         }
