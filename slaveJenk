@@ -13,8 +13,8 @@ pipeline{
                  withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable: 'DOCKER_PWD', usernameVariable: 'DOCKER_USER')]) {
                     echo "pulling new image"
                     sh 'docker login -u ${DOCKER_USER} -p ${DOCKER_PWD}'
-                    sh 'docker pull 63070047/image-backend:lastest'
-                    sh 'docker pull 63070047/image-frontend:lastest'
+                    sh 'docker pull pianaya/image-backend:lastest'
+                    sh 'docker pull pianaya/image-frontend:lastest'
                 }
                
             }
@@ -22,8 +22,8 @@ pipeline{
         stage("work"){
             steps{
                 echo "running image"
-                sh 'docker run -d --name backend -p 8088:80 63070047/image-backend:lastest'
-                sh 'docker run -d --name frontend -p 8081:80 63070047/image-frontend:lastest'
+                sh 'docker run -d --name backend -p 8088:80 pianaya/image-backend:lastest'
+                sh 'docker run -d --name frontend -p 8081:80 pianaya/image-frontend:lastest'
             }
         }
     }
