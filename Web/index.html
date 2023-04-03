@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Image Processor</title>
+    <style>
+            img{
+                max-width: 50vw;
+            }
+    </style>
+</head>
+<body>
+	<h1>Process Image</h1>
+	<form>
+		<label for="imageUpload">Upload an image: </label>
+		<input type="file" id="imageUpload" name="imageUpload" accept="image/*">
+	</form>
+
+	<div id="output" style="display: flex;">
+        <div style="flex: 1;" id="real"></div>
+        <div style="flex: 1;" id="process"></div>
+    </div>
+
+	<script>
+		const imageUpload = document.getElementById("imageUpload");
+		imageUpload.addEventListener("change", handleImageUpload);
+        
+		function handleImageUpload() {
+			const file = imageUpload.files[0];
+            const reader = new FileReader();
+
+            let base64Image;
+            reader.readAsDataURL(file);
+            reader.onload = () => {
+                console.log(reader.result);
+                base64Image = reader.result;
+                const img = new Image();
+                img.src = base64Image;
+                const rdiv = document.getElementById("real");
+                rdiv.innerHTML = "";
+                rdiv.appendChild(img);
+                processImage(base64Image);
+            };     
+		}
+
+
+		function processImage(imageData) {
+			fetch("http://3.84.235.150:8088/process-image", {
+				method: "POST",
+				body: JSON.stringify({ name:"Hello",surname:"GoodBye",numbers:[],image: imageData }),
+				headers: {
+					"Content-Type": "application/json"
+				}
+			})
+			.then(response => response.json())
+			.then(data => {
+				const pdiv = document.getElementById("process");
+				const processedImg = new Image();
+				processedImg.src = data.processed_image;
+                pdiv.innerHTML = "";
+				pdiv.appendChild(processedImg);
+			})
+			.catch(error => console.error(error));
+		}
+	</script>
+</body>
+</html>
+
+
